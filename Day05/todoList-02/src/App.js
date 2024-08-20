@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import ItemRow from "./ItemRow";
+import axios from "axios";
 import Input from "./Input";
 import Output from "./Output";
 
@@ -10,6 +10,18 @@ const App = () => {
     const [name, setName] = useState("Todo List");
     const [todoList, setToDoList] = useState([]);
     const [noCnt, setNoCnt] = useState(105);
+
+    // useEffect() 훅 - 렌더링 되는 것과 비동기로 작동한다.
+    // 비동기로 작동하므로 최초 한번만 실행 됨.
+    // 훅은 콜백함수 내부에 포함 될 수 없다.
+    // useEffect() 훅 내부에서 axios를 이용해서 처리.
+    // npm i -S axios
+    useEffect(() => {
+        axios.get('http://localhost:5000/todo')
+            .then( (response) => {
+                setToDoList(response.data);
+            });
+    }, []);
 
     const onClickEvenet = (inputTitle) => {
         // 기존 내용에 새 내용을 추가 해서 새 배열을 저장
