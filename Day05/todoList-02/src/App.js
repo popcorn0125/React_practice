@@ -8,16 +8,7 @@ const App = () => {
     // 전역변수를 state로 만들어야 re rendering 된다
     // 구조분해 할당 = 앞에는 state변수, 뒤에는 setter 함수
     const [name, setName] = useState("Todo List");
-    const [todoList, setToDoList] = useState([
-        // <li>팀 프로젝트 준비</li>,
-        // <li>React 예습</li>,
-        // <li>Vue 예습</li>
-        { no : 101, title : "공부하기", done : false},
-        { no: 102, title: "자바하기" , done:true },
-        { no: 103, title: "리액트하기" , done:false},
-        { no: 104, title: "스프링하기", done:false },
-
-    ]);
+    const [todoList, setToDoList] = useState([]);
     const [noCnt, setNoCnt] = useState(105);
 
     const onClickEvenet = (inputTitle) => {
@@ -25,10 +16,6 @@ const App = () => {
         setToDoList([...todoList, { no: noCnt, title: inputTitle, done: false }]);
         setNoCnt(noCnt+1);
     }
-
-    // function onClickEvenet() {
-    //     alert("클릭 이벤트 발생");
-    // }
 
     const onDelete = (item) => {
         const newList = todoList.filter((todo) => {
