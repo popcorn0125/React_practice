@@ -65,6 +65,19 @@ app.delete('/todo/:no', (req, res) => {
     res.send(todoList);
 });
 
+// app.delete('/todo', (req, res) => {
+//     // 할일 삭제
+//     // no가 같은 인덱스를 찾아서 제거
+//     console.dir(req.body.no);
+//     const idx = todoList.findIndex((item) => {
+//         return item.no === parseInt(req.body.no);
+//     })
+//     if (idx != -1) {
+//         todoList.splice(idx, 1);
+//     }
+//     res.send(todoList);
+// });
+
 const server = http.createServer(app);
 server.listen(app.get('port'), ()=>{
     console.log('실행 중 >> http://localhost:' + app.get('port'));

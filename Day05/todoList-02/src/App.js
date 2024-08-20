@@ -38,6 +38,16 @@ const App = () => {
         // const newList = todoList.filter((todo) => {
         //     return todo.no != item.no;
         // });
+        // axios({
+        //     method: 'delete',
+        //     url: serverURL,
+        //     data: {
+        //         no: item.no
+        //     }
+        // })
+        //     .then((response) => {
+        //         setToDoList(response.data);
+        //     });
         axios.delete(serverURL + '/'+ item.no, { no: item.no })
             .then((response) => {
                 setToDoList(response.data);
