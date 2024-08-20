@@ -10,6 +10,7 @@ const App = () => {
     const [name, setName] = useState("Todo List");
     const [todoList, setToDoList] = useState([]);
     const [noCnt, setNoCnt] = useState(105);
+    const serverURL = 'http://localhost:5000/todo';
 
     // useEffect() 훅 - 렌더링 되는 것과 비동기로 작동한다.
     // 비동기로 작동하므로 최초 한번만 실행 됨.
@@ -17,44 +18,59 @@ const App = () => {
     // useEffect() 훅 내부에서 axios를 이용해서 처리.
     // npm i -S axios
     useEffect(() => {
-        axios.get('http://localhost:5000/todo')
+        axios.get(serverURL)
             .then( (response) => {
                 setToDoList(response.data);
             });
     }, []);
 
-    const onClickEvenet = (inputTitle) => {
+    const onClickEvenet = (newInputTitle) => {
         // 기존 내용에 새 내용을 추가 해서 새 배열을 저장
-        setToDoList([...todoList, { no: noCnt, title: inputTitle, done: false }]);
-        setNoCnt(noCnt+1);
+        // setToDoList([...todoList, { no: noCnt, title: inputTitle, done: false }]);
+        // setNoCnt(noCnt+1);
+        axios.post(serverURL, {title: newInputTitle})
+            .then((response) => {
+                setToDoList(response.data);
+        });
     }
 
     const onDelete = (item) => {
-        const newList = todoList.filter((todo) => {
-            return todo.no != item.no;
-        });
-        setToDoList(newList);
+        // const newList = todoList.filter((todo) => {
+        //     return todo.no != item.no;
+        // });
+        axios.delete(serverURL + '/'+ item.no, { no: item.no })
+            .then((response) => {
+                setToDoList(response.data);
+            });
     }
-    const onDoneFlag = ({no, title, done}) => {
-        const newTodoList = [...todoList];
-        todoList.forEach((item, index) => {
-            if(item.no == no) {
-                newTodoList[index].done = !done;
-            }
-        })
+    const onDoneFlag = (todoItem) => {
+        // const newTodoList = [...todoList];
+        // todoList.forEach((item, index) => {
+        //     if(item.no == no) {
+        //         newTodoList[index].done = !done;
+        //     }
+        // })
         // ...은 기존에 있는걸 복사해서 사용하겠다는 의미
-        setToDoList(newTodoList);
+        todoItem.done = !todoItem.done;
+        axios.put(serverURL, todoItem)
+            .then((response) => {
+                setToDoList(response.data);
+            });
     }
 
-    const onEdit = ({ no, title, done }) => {
-        const newTodoList = [...todoList];
-        todoList.forEach((item, index) => {
-            if (item.no == no) {
-                newTodoList[index].title = title;
-            }
-        })
-        // ...은 기존에 있는걸 복사해서 사용하겠다는 의미
-        setToDoList(newTodoList);
+    const onEdit = (todoItem) => {
+        // const newTodoList = [...todoList];
+        // todoList.forEach((item, index) => {
+        //     if (item.no == no) {
+        //         newTodoList[index].title = title;
+        //     }
+        // })
+        // // ...은 기존에 있는걸 복사해서 사용하겠다는 의미
+        // setToDoList(newTodoList);
+        axios.put(serverURL, todoItem)
+            .then((response) => {
+                setToDoList(response.data);
+            });
     }
     const lineThrough = {textDecoration:"line-through", color:"blue"};
 
